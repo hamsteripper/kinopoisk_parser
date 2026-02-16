@@ -1,0 +1,6 @@
+#!/bin/bash
+
+pkill -f "kinopoisk_parser-0.0.1-SNAPSHOT.jar"
+sleep 2
+mvn clean install
+java -jar target/kinopoisk_parser-0.0.1-SNAPSHOT.jar | tee /proc/1/fd/1

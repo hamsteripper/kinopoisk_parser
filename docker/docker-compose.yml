@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  kinopoisk_parser:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        START_SCRIPT: ${START_SCRIPT}
+    command: [sleep, infinity]
+    depends_on:
+      - postgres_kinopoisk_parser
+    ports:
+      - 8181:8181
+#      - 5005:5005
+    volumes:
+      - ../:/java_rep
+    environment:
+      - DEBUG_IP=${DEBUG_IP}
+
+  postgres_kinopoisk_parser:
+    image: library/postgres:${POSTGRES_VERSION:-13}
+    container_name: postgres_springboot
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB:-bd}"
+      POSTGRES_USER: "${POSTGRES_USER:-root}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-root}"
+    ports:
+      - 54320:5432
+    volumes:
+      - ../database/data:/var/lib/postgresql/data
+
+networks:
+  hamsteripper_network:
+    name: hamsteripper_network
+    ipam:
+      config:
+        -
+          subnet: 172.20.0.0/24
+          gateway: 172.20.0.1
