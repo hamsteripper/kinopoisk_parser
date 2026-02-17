@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity(name = "Movie")
 @Getter
 @Setter
-@AllArgsConstructor
+//@AllArgsConstructor
 @Table(name = "movie")
 public class Movie {
 
@@ -40,6 +40,12 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie")
     private Set<MovieVotes> movieVotes;
+
+    public Movie(int position, String originalName, LocalDate year) {
+        this.position = position;
+        this.originalName = originalName;
+        this.year = year;
+    }
 
     public Movie() {
 
