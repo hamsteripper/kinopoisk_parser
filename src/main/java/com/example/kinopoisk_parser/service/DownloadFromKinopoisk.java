@@ -16,38 +16,39 @@ import java.time.Duration;
 @Service
 public class DownloadFromKinopoisk {
 
-    private final String resultUrl;
     @Value("${kinopoisk.config.url}")
     private String url;
     @Value("${kinopoisk.config.token}")
     private String token;
 
     public DownloadFromKinopoisk(){
-        this.resultUrl = (this.url + "/movie?lists=top250&limit=250").replace("//movie", "/movie");
     }
 
     public JsonNode downloadTop250() {
 
-        // 1. Создание клиента
+        // 0. Create url
+        String resultUrl = (this.url + "/movie?lists=top250&limit=250").replace("//movie", "/movie");
+
+        // 1. Create client
         HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
 
-        // 2. Создание запроса
+        // 2. Create request
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(this.resultUrl))
+                .uri(URI.create(resultUrl))
                 .header("X-API-KEY", this.token)
                 .header("Accept", "application/json")
                 .GET().build();
 
         try {
 
-            // 3. Отправка запроса и получение ответа
+            // 3. Send request
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
                 throw new HttpRetryException(response.body(), response.statusCode());
             }
 
-            // 4. Обработка ответа
+            // 4. Calculate response
             ObjectMapper mapper = new ObjectMapper();
 
             return mapper.readTree(response.body());
@@ -55,6 +56,7 @@ public class DownloadFromKinopoisk {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return null;
         }
 
