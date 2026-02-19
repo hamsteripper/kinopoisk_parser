@@ -7,8 +7,6 @@ import com.example.kinopoisk_parser.repository.MovieRepositoryImpl;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.JsonNode;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +36,7 @@ public class JsonNodeKinopoiskParser {
                 // Update movie entity
                 movieObj.setPosition(i++);
                 movieObj.setOriginalName(movie.get("alternativeName").asString());
-                movieObj.setYear(LocalDate.of(movie.get("year").asInt(), Month.JANUARY, 1));
+                movieObj.setYear(movie.get("year").asInt());
                 movieObj.setOriginalId((long) movie.get("id").asInt());
 
                 // Create MovieRating
