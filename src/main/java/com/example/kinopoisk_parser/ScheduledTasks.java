@@ -4,6 +4,7 @@ import com.example.kinopoisk_parser.model.Movie;
 import com.example.kinopoisk_parser.repository.MovieRepositoryImpl;
 import com.example.kinopoisk_parser.service.DownloadFromKinopoisk;
 import com.example.kinopoisk_parser.service.JsonNodeKinopoiskParser;
+import jakarta.transaction.Transactional;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.JsonNode;
@@ -23,17 +24,18 @@ public class ScheduledTasks {
         this.downloadFromKinopoisk = downloadFromKinopoisk;
     }
 
-    @Scheduled(cron = "0 * * * * *")
-    public void runHourlyTask() {
+    @Scheduled(cron = "0 0 0 * * *")
+    @Transactional
+    public void runTask() {
 
         // Get json from url
-//        JsonNode jsonNode = this.downloadFromKinopoisk.downloadTop250();
+        JsonNode jsonNode = this.downloadFromKinopoisk.downloadTop250();
 
         // Json parser
-//        List<Movie> movies = this.jsonNodeKinopoiskParser.parse(jsonNode);
+        List<Movie> movies = this.jsonNodeKinopoiskParser.parse(jsonNode);
 
         // Save to bd
-//        this.movieRepository.saveAll(movies);
+        this.movieRepository.saveAll(movies);
 
         System.out.println("The task is completed");
     }

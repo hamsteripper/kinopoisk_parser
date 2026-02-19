@@ -33,14 +33,15 @@ public class Movie {
     private List<MovieRating> movieRatings = new ArrayList<>();
 
     public void addMovieRating(MovieRating movieRating){
-        movieRatings.add(movieRating);
+        this.movieRatings.add(movieRating);
         movieRating.setMovie(this);
     }
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MovieVotes> movieVotes = new ArrayList<>();
+
     public void addMovieVotes(MovieVotes movieVote){
-        movieVotes.add(movieVote);
+        this.movieVotes.add(movieVote);
         movieVote.setMovie(this);
     }
 
