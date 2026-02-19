@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.Instant;
 
 @Entity(name = "MovieVotes")
 @Getter
@@ -28,6 +31,10 @@ public class MovieVotes {
 
     @Column(name = "russian_film_critics", nullable = false)
     private int russianFilmCritics;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Instant updateAt;
 
     @ManyToOne
     @JoinColumn(nullable = false)

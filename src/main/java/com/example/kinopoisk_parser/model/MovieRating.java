@@ -1,14 +1,15 @@
 package com.example.kinopoisk_parser.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.Instant;
 
 @Entity(name = "MovieRating")
 @Getter
 @Setter
-@AllArgsConstructor
 @Table(name = "movie_rating")
 public class MovieRating {
 
@@ -28,6 +29,10 @@ public class MovieRating {
 
     @Column(name = "russian_film_critics", nullable = false)
     private float russianFilmCritics;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Instant updateAt;
 
     @ManyToOne
     @JoinColumn(nullable = false)
