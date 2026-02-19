@@ -1,12 +1,8 @@
 package com.example.kinopoisk_parser.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,10 +26,8 @@ public class Movie {
     @Column(name = "original_id", nullable = false, unique = true)
     private Long originalId;
 
-    @DateTimeFormat(pattern = "yyyy")
-    // For serializing to/from JSON
-    @JsonFormat(pattern = "yyyy")
-    private LocalDate year;
+    @Column(name = "year")
+    private int year;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MovieRating> movieRatings = new ArrayList<>();

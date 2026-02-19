@@ -6,8 +6,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 @Repository
@@ -51,6 +56,28 @@ public class MovieRepositoryImpl implements MovieRepository {
         TypedQuery<Movie> query = em.createQuery(jpql, Movie.class).setParameter("originalId", originalId);
 
         return query.getSingleResultOrNull();
+    }
+
+    public Iterable<Movie> findByDate(LocalDate date, int page, int size) {
+
+        String jpql = "SELECT entity FROM Movie entity left join entity.movieRatings mr WHERE mr.updatedAt >= :startDate AND mr.updatedAt < :finishDate ORDER BY mr.kp DESC LIMIT :limit OFFSET :offset";
+        TypedQuery<Movie> query = em.createQuery(jpql, Movie.class)
+                .setParameter("startDate", date.atStartOfDay().toInstant(ZoneOffset.UTC))
+                .setParameter("finishDate", date.plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC))
+                .setParameter("offset", (page - 1) * size)
+                .setParameter("limit", size);
+
+        return query.getResultList();
+    }
+
+    public Iterable<Movie> find(int page, int size){
+
+        String jpql = "SELECT entity FROM Movie entity left join entity.movieRatings mr ORDER BY mr.kp DESC LIMIT :limit OFFSET :offset";
+        TypedQuery<Movie> query = em.createQuery(jpql, Movie.class)
+                .setParameter("offset", (page - 1) * size)
+                .setParameter("limit", size);
+
+        return query.getResultList();
     }
 
     @Override

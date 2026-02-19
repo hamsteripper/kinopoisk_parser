@@ -34,7 +34,7 @@ public class MovieVotes {
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private Instant updateAt;
+    private Instant updatedAt;
 
     @ManyToOne
     @JoinColumn(nullable = false)
