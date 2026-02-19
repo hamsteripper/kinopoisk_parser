@@ -8,9 +8,4 @@ import org.springframework.stereotype.Repository; // @Repository is a specializa
 import java.util.Optional;
 
 @Repository
-public interface MovieRepository extends CrudRepository<Movie, Long> {
-
-//    // Custom query method derived from the method name
-//    Optional<Movie> findById(Long id);
-
-}
+public interface MovieRepository extends CrudRepository<Movie, Long> {}
