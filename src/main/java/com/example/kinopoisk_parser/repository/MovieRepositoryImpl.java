@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -55,6 +56,7 @@ public class MovieRepositoryImpl implements MovieRepository {
         return query.getSingleResultOrNull();
     }
 
+    @Cacheable(value = "movies", key = "#date")
     public Iterable<Movie> findByDate(LocalDate date, int page, int size) {
 
         String jpql = "SELECT entity FROM Movie entity left join entity.movieRatings mr WHERE mr.updatedAt >= :startDate AND mr.updatedAt < :finishDate ORDER BY mr.kp DESC LIMIT :limit OFFSET :offset";
@@ -67,6 +69,7 @@ public class MovieRepositoryImpl implements MovieRepository {
         return query.getResultList();
     }
 
+    @Cacheable(value = "movies")
     public Iterable<Movie> find(int page, int size){
 
         String jpql = "SELECT entity FROM Movie entity left join entity.movieRatings mr ORDER BY mr.kp DESC LIMIT :limit OFFSET :offset";

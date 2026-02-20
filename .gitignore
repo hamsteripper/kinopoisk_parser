@@ -34,4 +34,4 @@ build/
 .idea/
 
 /docker/.env
-/database/
+/local_data/

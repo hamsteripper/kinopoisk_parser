@@ -55,9 +55,6 @@ public class DownloadFromKinopoisk {
 
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
         }
 
     }

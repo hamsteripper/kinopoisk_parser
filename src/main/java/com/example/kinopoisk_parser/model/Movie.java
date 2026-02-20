@@ -3,6 +3,7 @@ package com.example.kinopoisk_parser.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "movie")
-public class Movie {
+public class Movie implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
